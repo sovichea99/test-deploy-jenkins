@@ -1,8 +1,7 @@
+```groovy
 pipeline {
     agent any
 
-    // Requires a GitHub webhook pointed at http://YOUR_SERVER:8080/github-webhook/
-    // (GitHub plugin -> repo Settings -> Webhooks -> Payload URL, content type application/json)
     triggers {
         githubPush()
     }
@@ -12,12 +11,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Build & Deploy') {
             steps {
                 sh '''
@@ -31,8 +24,12 @@ pipeline {
             steps {
                 sh '''
                     sleep 10
-                    curl -f http://localhost:8081/api/health || (docker compose logs backend && exit 1)
-                    curl -f http://localhost:3000 || (docker compose logs frontend && exit 1)
+
+                    curl -f http://localhost:8081/api/health \
+                        || (docker compose logs backend && exit 1)
+
+                    curl -f http://localhost:3000 \
+                        || (docker compose logs frontend && exit 1)
                 '''
             }
         }
@@ -42,8 +39,10 @@ pipeline {
         success {
             echo 'Deployed successfully — backend and frontend are up.'
         }
+
         failure {
             echo 'Pipeline failed — check the stage logs above.'
         }
     }
 }
+```

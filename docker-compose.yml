@@ -1,9 +1,6 @@
-version: "3.8"
-
 services:
   backend:
     build: ./backend
-    container_name: demo-backend
     ports:
       - "8081:8081"
     restart: unless-stopped
@@ -14,7 +11,6 @@ services:
       args:
         # Use the Docker network name so the frontend container can reach the backend container
         NEXT_PUBLIC_API_URL: http://backend:8081
-    container_name: demo-frontend
     ports:
       - "3000:3000"
     depends_on:

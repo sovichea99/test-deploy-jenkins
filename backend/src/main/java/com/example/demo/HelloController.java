@@ -12,7 +12,7 @@ import java.util.Map;
 public class HelloController {
 
     // Bump this string and commit to prove the Jenkins pipeline redeployed the change
-    private static final String VERSION = "v1";
+    private static final String VERSION = "v2";
 
     @GetMapping("/api/hello")
     public Map<String, Object> hello() {
